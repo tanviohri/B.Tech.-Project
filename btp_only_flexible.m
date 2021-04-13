@@ -19,7 +19,7 @@ end
 plot(n_lambda);
 function x =optimal_staffing(q,lambda,mu,a,gamma,c_flex,beta)
          syms n;
-         if((0<=q) && (q<=1/2))
+         if((0<=q) && (q<=1/2))c
              x=lambda/mu;
          end
          if((1/2<q) && (q<=3/4))
@@ -27,6 +27,14 @@ function x =optimal_staffing(q,lambda,mu,a,gamma,c_flex,beta)
          end
          if((q>3/4))
              f=c_flex+beta/2+(n^(-q))*(-(beta*lambda)/(2*mu)+(beta*q*lambda)/(2*mu))+(n^(1-q))*(beta/2+beta*q/4)+(n^(-q-1))*((-beta*q*(lambda^2))/(4*(mu^2)))+(n^(q-1))*(beta*q/4)==0;
-             x=fsolve(f,25);
+             S=solve(f,'ReturnConditions',true,'Real',true);
+             S.conditions
+             for i=1:10
+                 condWithValues = subs(S.conditions, S.parameters, [i]);
+                 if(isAlways(condWithValues))
+                    x=subs(S.n,S.parameters,[i]);
+                    break;
+                 end
+             end
          end
 end
