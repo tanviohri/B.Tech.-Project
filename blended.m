@@ -1,5 +1,6 @@
 function [m_tilde, n_tilde]=blended(a, q,T,lambda, c_fix, c_flex, h ,r, mu, theta)
     k = length(T);
+    beta=(h/theta+r)*mu;
     n_tilde = zeros(1, k);
     if q < 1
         if c_flex < c_fix
@@ -22,11 +23,11 @@ function [m_tilde, n_tilde]=blended(a, q,T,lambda, c_fix, c_flex, h ,r, mu, thet
             n_tilde(i) = 0;
         end          
         for i=k_0+1:k
-            n_tilde(i)= 0; %to be completed 
+            n_tilde(i)= flexible(q,lambda(i)/mu - m_tilde,a,c_flex,beta);  
         end
     end
-    if q == 1
-        g = @(c) 0; %to be completed
+    if q == 1        
+        g = @(c) c + c*a*(2*c/beta - 1) - 0.25*beta*a*((2*c/beta - 1)^2 -1); %to be completed
         if c_flex < g(c_fix)
             k_1 = 0;
         else
@@ -37,12 +38,12 @@ function [m_tilde, n_tilde]=blended(a, q,T,lambda, c_fix, c_flex, h ,r, mu, thet
                 end
             end
         end
-        m_tilde = lambda(k1)/mu;
+        m_tilde = lambda(k_1)/mu;
         for  i=1:k_1
             n_tilde(i) = 0;
         end          
         for i=k_1+1:k
-            n_tilde(i)= 0; %to be completed 
+            n_tilde(i)= flexible(q,lambda(i)/mu - m_tilde,a,c_flex,beta);
         end
     end
 end
