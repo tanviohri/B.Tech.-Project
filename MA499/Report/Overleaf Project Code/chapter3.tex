@@ -1,0 +1,84 @@
+\chapter{Capacity sizing with only self scheduling servers under Demand-Side Parameter Uncertainty}
+In this chapter we will look at a workforce consisting of only flexible i.e. self-scheduling servers and look at the optimal cost minimising model in this case while also considering the demand-side parameter uncertainty that we looked at chapter 2, hence combing the concepts of both chapter 2 and chapter 3 .It is essential that we look at a workforce with only flexible workers because two main reasons, one it is prevalent in a real life scenario and also it gives us clean insights into  how a system would behave with service side uncertainty which will be crucial in modelling a blended workforce.
+\section{Modelling Framework}
+We will continue using the same modelling framework where we considered a single class $M/M/N +M$ model, but here $N$, the number of servers is random. The service times are i.i.d exponential with rate $\mu$. As in any real life scenario the customers are impatient and their patience times are i.i.d with rate $\theta$. The queue discipline is FIFO. We assume all the processes are mutually independent of each other and also independent of $N$. Also assume that the shift is long enough for abandonment to keep the system stable.We take that there are $k$ shifts in the system and $T_i$ is the length of period $i$.For the period $i$ , the arrival rate of Poisson arrival process is $\lambda_i$. Let's assume a $\lambda$ where $\lambda>0$ and $\lambda_i=\lambda \xi_i$ where $\xi_i >0$ for all $i$. We also arrange the shifts in the increasing order of $\lambda_i$ i.e. $ \lambda_i >\lambda_j$ for $i>j$. 
+\subsection{A random number of servers}
+Let $n_\lambda^{i}$ be the number of flexible servers decided beforehand for the shift $i$ with arrival rate $\lambda_i$. Now let $N_{flex}(n_\lambda^{i})$ be the number of servers that show-up in the shift $i$, which we could clearly see is a function of $n_\lambda^{i}$.So,
+$$N_{flex}(n_\lambda^{i})= \eta_{n_\lambda^{i}}+ \epsilon_{n_\lambda^{i}}$$
+Here, $\eta_{n_\lambda^{i}}=E[n_\lambda^{i}]$ and $\epsilon_{n_\lambda^{i}}$ represents the randomness factor here, $E[\epsilon_{n_\lambda^{i}}]=0$ and $Var[\epsilon_{n_\lambda^{i}}]=\sigma_{n_\lambda^{i}}^{2}$. Our main task is to find the optimal value of $n_\lambda^{i}$, for this we need to know the relation between the $N_flex(n_\lambda^{i})$ and $n_\lambda^{i}$. This distribution mainly depends on the value of $\sigma_{n_\lambda^{i}}^{2}$. We need to find the variance $\sigma_{n_\lambda^{i}}^{2}$ as a function of $n_\lambda^{i}$.
+\\ For this, we will take the starting point as a Binomial models where servers are treated as independent of each other and with constant probability like in \textit{Ibrahim}\cite{ibrahim}.
+Considering this ,for a single period we get
+$$N_{flex}(n_{\lambda})=\sum_{j=1}^{n_{\lambda}}{I_j}$$ where , for $1 \leq j \leq n_{\lambda}$, $I_j=1$ if the servers shows up else $0$ and have a constant probability $p$ of showing up. Since, the $I_j$ are i.i.d, we have $\eta_{n_\lambda}=n_{\lambda}.p$ and $\sigma_{n_\lambda}^{2}= n_{\lambda}.p.(1-p)$. We can see here that we are getting that the variability is of order $\sqrt{n_\lambda}$. 
+\\ In a real life scenario, the servers decisions aren't independent as there might be some common factors that effect their show-up probability. Like in case of Uber drivers , weather conditions can be a common factor. We see in most cases, the variability observed is far greater order than $\sqrt{n_\lambda}$.This tells us that we need to go beyond the binomial approximation and consider other distributions for server show-up probability.See \textit{Dong} \cite{dong} for numerical results of Uber driver data and extensions of binomial approximation. In our study we will stick with the binomial model.
+\section{The final model}
+After considering the models for server show-up, we can see that the $\eta_{n_\lambda^{i}}=n_\lambda^{i}.p$, so by slight abuse of notation, from here on we consider $n_\lambda^{i}$ as the expected number of servers that show-up in a shift. From this, we get the simplified model,$$N_{flex}(n_\lambda^{i})=n_\lambda^{i}+\sigma_{n_\lambda^{i}}\epsilon_i$$ where $\epsilon_i$ are i.i.d random variables $ -1 \leq \epsilon_i \leq 1$ with $E[\epsilon_i]=0$. We also assume that in this simplified model $\epsilon_i$ distribution is independent of $n_\lambda_{i}$ and has a $p.d.f$ of $f_\epsilon$ on $(-1,1)$ and a $c.d.f$ of $F_\epsilon$ which is invertible in the given domain.For the ease of explanation, we also assume the specific form $\sigma_n = an^q$, for some $a > 0$ and $0<q\leq1$. For $q = 1$, we take $a < 1$ so that $N_{flex}(n_\lambda) \geq 0$. Our main task now is to find the optimal $n_{\lambda}^{i}$.
+\section{The long term staffing problem}
+As we discussed earlier the decision for number of server is done before each shift by the system manager. So in practice, at time zero the manager decides a number of flexible servers $n^i$ for shift $i$. At the start of shift , we get to know the number of servers who showed up $N_{flex}(n^i)=s^i$ for the remainder of the shift, the system operates like a Erlang A queue with $s^i$ servers.
+\\ Consistent to the \textit{Bassamboo}\cite{bassamboo} , we consider two costs in the system related to the customer , the delay cost $h$ and the abandonment penalty $r$ . If we denote the cost per flexible server as $c_{flex}$, we have from \textbf{Assumption 3.1} 
+$$c_{flex} < (\frac{h}{\theta}+r)\mu$$ This assumption tells that it's not infinitely expensive to employ flexible workers.
+\\ Let ${Q}_{\lambda}^{i}(n_\lambda^{i})$ be the steady state queue length in shift $i$ and ${X}_{\lambda}^{i}(n_\lambda^{i})$ be the steady state number of customers in shift $i$, we have
+$${Q}_{\lambda}^{i}(n_\lambda^{i})=({X}_{\lambda}^{i}(n_\lambda^{i})-N_{flex}(n_\lambda^{i}))^{+}$$
+If ${\xi}_{\lambda}^{i}(n_\lambda^{i})$ is the steady state rate of customer abandonment, with exponentially distributed patience times with rate $\theta$, we have
+$${\xi}_{\lambda}^{i}(n_\lambda^{i})=\mathbf{E}[{Q}_{\lambda}^{i}(n_\lambda^{i})]$$
+If $\textbf{n}_\lambda = (n_\lambda^1,n_\lambda^2,\hdots,n_\lambda^k)$, the problem can now be written as
+ \begin{equation}
+     \min_{\textbf{n}_\lambda} {\Pi}_{\lambda}(\textbf{n}_\lambda)
+    \equiv \sum_{i=1}^{k}{T_{i}(c_{flex}n_\lambda^{i}+h.\mathbf{E}[{Q}_{\lambda}^{i}(n_\lambda^{i})]+r.{\xi}_{\lambda}^{i}(n_\lambda^{i}))}
+    =\sum_{i=1}^{k}{T_{i}(c_{flex}n_\lambda^{i}+(h+r\theta)\mathbf{E}[{Q}_{\lambda}^{i}(n_\lambda^{i})])}
+\end{equation}
+We can further simplify this into a single shift problem and ignore the $i$ and write it as
+\begin{equation}
+    \min_{{n}_\lambda \geq 0} {\Pi}_{\lambda}^i({n}_\lambda) \equiv c_{flex}n_\lambda+(h+r\theta)\mathbf{E}[{Q}^i(n_\lambda)]
+\end{equation}
+From here on we denote the optimal solution using $n_\lambda^{*}$
+\section{Fluid Approximation}
+In this, we ignore both stochastic variation and parameter uncertainty.
+\subsection{The problem formulation}
+\begin{equation}
+    \min_{n} \bar{{\Pi}_{\lambda}}({n}) \equiv c_{flex}.n+(\frac{h}{\theta}+r)\mu(\frac{\lambda}{\mu}-n)^{+}
+\end{equation}
+Let, $\beta=(\frac{h}{\theta}+r)$ and We denote $\bar{n_\lambda}$ as the solution to $(4.3)$.
+\subsection{Asymptotic Accuracy}
+\begin{theorem}
+For large $\lambda$,
+$$\Pi_\lambda(\bar{n_\lambda})=\Pi_\lambda(n_\lambda^{*})+\mathcal{O}(max(\sigma_\lambda,\sqrt{\lambda}))$$
+\end{theorem}
+From this theorem, we can see that when the uncertainty in the number of servers in the system i.e $\sigma_{\lambda}$ is small , the order of optimalty gap for the fluid solution is less i.e. $\mathcal{O}(\sqrt{\lambda})$ , where as when the uncertainty is high the gap is large and the fluid approximation is not optimal.
+\subsection{Optimal staffing policy}
+Since from \textbf{Assumption 3.1} W.K.T, $c_{flex}<\beta$, this problem is same as the problem in chapter 3 , we have the optimal solution $\bar{n_\lambda}=\frac{\lambda}{\mu}$, i.e. match the mean supply with mean demand.
+\section{Stochastic-Fluid Approximation}
+In this, we only ignore the stochastic variation.
+\subsection{The problem formulation}
+\begin{equation}
+    \min_{n} \tilde{{\Pi}_{\lambda}}({n}) \equiv c_{flex}.n+\beta E[(\frac{\lambda}{\mu}-n_\lambda-\sigma_{n_\lambda}\epsilon)^{+}]
+\end{equation}
+We denote the solution for $(4.4)$ with $\tilde{n_\lambda}$.
+\subsection{Asymptotic Accuracy}
+\begin{theorem}
+For large $\lambda$,
+$$\Pi_\lambda(\tilde{n_\lambda})=\Pi_\lambda(n_\lambda^{*})+\mathcal{O}(min(\lambda/\sigma_\lambda,\sqrt{\lambda}))$$
+\end{theorem}
+As we can see from the theorem when the uncertainty in number of servers is large, the optimalty gap is very small, but when it is small, the gap is of the order that is same as the fluid approximation $\mathcal{O}(\sqrt{\lambda})$, so in case of small $\sigma_{\lambda}$, there is no advantage in using the stochastic approximation and we can use the fluid approximation.
+\subsection{Optimal Staffing Policy}
+As we saw , the stochastic fluid approximation gives very small gaps when the uncertainty is large but the solution is only numerically solvable. 
+\\ To solve the equation (4.4), we need to essentially solve
+\begin{equation}
+    \Pi_\lambda^{'}(n_\lambda) \equiv c_{flex}-\beta F_{\epsilon}(\frac{\lambda/\mu-n_{\lambda}}{\sigma_{n_{\lambda}}})-\beta\sigma^{'}_{n_{\lambda}}\int_{-1}^{\frac{\lambda/\mu-n_{\lambda}}{\sigma_{n_{\lambda}}}}xf_{\epsilon}(x)dx=0
+\end{equation}
+Here, we will try to change the $\tilde{n_\lambda}$ to some other closed form equation with the same complexity. We will also see that the structure of the solution $\tilde{n_\lambda}$ is closely dependent on the dependency of the uncertainty on the number of servers, i.e on the value of $q$. 
+
+\begin{theorem}
+We can divide the solution into mainly 4 regimes and the optimal staffing is as follows.
+\\\textbf{\textit{(I)[Variability-dominated.]}} If $0\leq q \leq 1/2$, we have the same solution as fluid i.e. ${n_\lambda}=\frac{\lambda}{\mu}$ and $$\Pi_\lambda({n_\lambda})=\Pi_\lambda(n_\lambda^{*})+\mathcal{O}(\sqrt{\lambda})$$
+\\\textbf{\textit{(II)[Moderately uncertainty-dominated.]}} If $1/2 < q \leq 3/4 $, we have ${n_\lambda}=\frac{\lambda}{\mu}-\gamma\sigma_{\frac{\lambda}{\mu}}$, where $\gamma = F_{\epsilon}^{-1}(c_{flex}/\beta)$ and
+$$\Pi_\lambda({n_\lambda})=\Pi_\lambda(n_\lambda^{*})+\mathcal{O}(\lambda/\sigma_\lambda)$$
+\\\textbf{\textit{(III)[Strongly uncertainty-dominated.]}} If $3/4 < q < 1 $, we have $n_\lambda = \tilde{n_\lambda}$ and
+$$\Pi_\lambda({n_\lambda})=\Pi_\lambda(n_\lambda^{*})+\mathcal{O}(\lambda/\sigma_\lambda)$$
+\\\textbf{\textit{(IV)[Extremely uncertainty-dominated.]}} If $q=1$ and $ 0 < a <1$ , then $n_\lambda= \tilde{n_\lambda} = \frac{\lambda}{\mu}\eta$ , where $\eta$ is the solution of 
+$$c_{flex}+\beta a \int_{-1}^{1/(a\eta)-1/a}{F_\epsilon(u)du}-\frac{\beta}{\eta}F_\epsilon(\frac{1}{a\eta}-\frac{1}{a})=0$$
+In this case,
+$$\Pi_\lambda({n_\lambda})=\Pi_\lambda(n_\lambda^{*})+\mathcal{O}(\lambda/\sigma_\lambda)=\Pi_\lambda(n_\lambda^{*})+\mathcal{O}(1)$$
+\end{theorem}
+Here, we should note that in $I$ and $II$ , the values are not optimal solution to $(4.5)$ but rather solutions to a closed form solution which gives the same complexity of optimalty gap. In the case of $III$ and $IV$, those are the exact solution of $(4.5)$. \\
+
+For detailed explanation, refer \textit{Dong and Ibrahim} \cite{dong}.

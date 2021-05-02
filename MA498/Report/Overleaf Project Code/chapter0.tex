@@ -1,0 +1,168 @@
+\chapter{Introduction}
+
+This section has been added to cater to a reader who does not have prior knowledge about queuing theory .It includes some basic queuing models, approximations, laws and problems that have been used throughout this project.
+
+
+
+\section{Basics of Queuing Theory}
+
+The main reason for the usage of queues in modelling service systems is because the resources are limited. Hence it leads to the formation of queues.In these queuing systems, we often see a trade-off between the cost of maintaining the system and quality service, while modelling there is an attempt to optimize on both ends .To analyze any queuing system, we need to know the following parameters.
+\newpage
+\subsection{Arrival Process}
+ We look at this in terms of 
+ \begin{itemize}
+ \item Inter arrival times of different customers
+\item How the customers arrive (individually or in batches)
+\item  Whether the number of potential customers (also known as calling population) is finite or infinite.
+\end{itemize}
+ The arrival times could be random or scheduled, in random arrival times one of the important models is the exponential arrival process where the difference between two arrivals is distributed exponentially in a Poisson distribution 
+\subsection{Service Mechanism}
+We look at this in terms of
+\begin{itemize}
+    \item The distribution of service times
+    \item No. of servers in the system and how that changes 
+    \item Relation between servers in different service centers and preemption in processes.
+\end{itemize}
+In general, we assume that the service times are independent of other factors and that they are exponential. We also assume that the number of servers is fixed. 
+\newpage
+\subsection{Queue Characteristics}
+\begin{itemize}
+\item \textbf{Queue Capacity}
+\\The queue capacity can be finite or infinite.
+\item \textbf{Queue Behaviour}
+\\The actions of customers when they are waiting in the queue for the service to begin .There are various types of behaviours like 
+\begin{itemize}
+\item \textbf{Balk}: A behaviour in which the customers won't join the system when the queue is too long 
+\item \textbf{Renege or Abandon}: A behaviour in which the customers are impatient and leave before getting served.
+\item \textbf{Jockey}: A behaviour in which the customers move from one queue to a shorter queue
+\end{itemize}
+Customer abandonment or impatient customers is a important factor which we look at when modelling queuing systems.The distribution of customer abandonment times is also taken into consideration when optimizing a system.
+\item \textbf{Queue Discipline}
+\\The algorithm which determines which customer gets served when a server gets free, there are various algorithms, with their own merits and demerits . For example,
+\begin{itemize}
+\item Service according to priority (PR).
+\item Shortest processing time first (SPT)
+\item Last in first out (LIFO)
+\item First in first out or First come first serve (FIFO)
+\item Customers are served in a random orders (SIRO)
+\end{itemize}
+\end{itemize}
+\subsection{Kendall's Notation}
+In this notation , any queuing system can be represented as $A/B/c/N/K/D$ where 
+\\ D is the queue discipline
+\\ K is the size of potential number of customers in the system
+\\ N is the capacity of the queue
+\\ c represents the number of servers in the system 
+\\ B represents the distribution of service process
+\\ A represents the distribution of arrival process
+\\ In general , when not specified the last three parameters N, K, D are taken as $\infty$, $\infty$, FIFO respectively
+\\ For exponential distribution, we use $M$ and for the general distribution we use $G$, for the arrival and service time distribution.
+\section{Performance Measures}
+For analysing the performance of a queuing system , we need to know the following values
+\begin{itemize}
+    \item Average waiting time
+    \item Average occupancy of queue
+    \item Server utilization
+    \item Probability of waiting time exceeding a given time
+    \item Probability of queue occupancy exceeding a given occupancy
+    \item Service time of $n^{th}$ customer
+    \item Arrival time between $n^{th}$ customer and $(n-1)^{th}$ customer
+    \item Parameters of the system in the long run
+\end{itemize}
+The answers to the above questions can help us in designing a optimal system to minimize some cost in the system.
+\section{Some results for M/M/1 system}
+Consider a model with poisson distributed customer arrival (arrival rate: $\lambda$) and exponential service times (rate: $\mu$). 
+\\ The inter-arrival time distribution is $p_{\lambda}(t)=\lambda e^{-\lambda t}$
+\\ The service time distribution is $p_{\mu}(t<t_{0})=1-e^{-\mu t_{0}}$
+\\ For a stable system , the rate of customer arrival should be less than or equal to the rate at which they are being processed $\lambda < \mu$ 
+\\ We define system utilization as $\rho =\frac{\lambda}{\mu}=P[system\, is \, busy]$ 
+\\Let's define $S_{n}$ as the state with $n$ customers in the system ($n-1$ in queue , the $n^{th}$ being served) and let $p_n$ = $P[n\, customers \, in \, the \, system]$ , for steady state. Then,
+\\ $rate_{in}=rate_{out}$ $\rightarrow$ $p_n\lambda=p_{n+1}\mu$ $\rightarrow$ $p_{n+1}=p_{0}\rho_{n+1}$ 
+\\ Since $p_{0}=1-\rho$
+$$P[n\, customers \, in \, the \, system]=p_{n}=\rho_{n}(1-\rho) \ \  $$
+\\ To find the average number of customers in the system,
+\begin{equation}
+    \bar{N}=\sum k.(\rho_{k}(1-\rho))
+        = (1-\rho)\sum k\rho_{k} 
+        =\frac{\rho}{1-\rho} \ \ \cite{basics}
+\end{equation} 
+\\ Average system time is given by,
+\begin{equation}
+    T=\frac{\bar{N}}{\lambda}\,\,\,(Little's\,Result)
+    \\=\frac{1}{\mu-\lambda} \ \ 
+\end{equation}
+For more results and further explanation , refer \textit{Fundamentals of Queuing Systems} \cite{basics}.
+
+\section{The Fluid Approximation}
+In most practical scenarios, the value of number of arrivals is quite large with respect to the time period under consideration. For such systems, customer flow may be approximated as the flow of a continuous fluid. This means we don't consider customers as discrete entities. \\
+Let's imagine the fluid queue's physical analogue to gain better understanding. \\
+Arrivals to the queue (Arrival Rate: $\lambda$) $\leftrightarrow$ Water flowing out of a tap \\
+Server $\leftrightarrow$ Drain \\
+Queue $\leftrightarrow$ Water in the sink \\
+Processing Capacity of one server (Service Rate: $\mu) \leftrightarrow$ Maximum flow rate through one drain\\ \\
+\textbf{What does this mean w.r.t. overcrowding in the queue ($\leftrightarrow$ accumulation of water in the sink)?} \\
+We are answering this based on single-server model. If we have multiple servers($\leftrightarrow$ drains) then the processing($\leftrightarrow$ drainage) capacity becomes $b*\mu$ where b is the number of servers/drains.\\
+\begin{itemize}
+\itemsep1em
+  \item If $\lambda<\mu$, water gets drained out faster than it flows out of the tap, no accumulation of water $\leftrightarrow$ queue size = 0.
+  \item If $\lambda>\mu$, water gets drained out slower than it flows out of the tap, there is accumulation of water which increases up over time $\leftrightarrow$ queue size increases over time.
+  \item If $\lambda$ varies over time, the water level varies with time $\leftrightarrow$ queue size varies over time. This is one of the most important applications of the fluid approximation. It has the ability to handle uncertain arrivals which is absent in many other models.
+ \end{itemize}
+\subsection{Some General Relations}
+Let \\
+$A(t)$: cumulative number of arrivals by
+time $t$. 
+\[A(t) = \int_{0}^{t} \lambda(u) du \ \ \ \ \cite{basics}\]
+\\
+$D(t)$: cumulative number of departures by
+time $t$. \\
+Since the fluid is assumed to be infinitely divisible, the values of $A(t)$ and $D(t)$ are continuous. They are also non-decreasing and $A(t) \geq D(t)$ because water can not drain out before it comes out of the tap. Thus, queue length = $A(t) - D(t) \geq 0$. Also, if FCFS queue discipline is in place, the time $n^{th}$ customer spends in the queue = $D^{-1}(n) - A^{-1}(n)$. This formula holds even if n is not a whole number since we consider customers to be infinitely divisible. So,\\
+Time $n^{th}$ customer spends in the queue = $D^{-1}(n) - A^{-1}(n)$ \cite{basics}\\
+Total time spent in queue by all the customers = $\int_{0}^{N} [D^{-1}(n) - A^{-1}(n)] dn$ \cite{basics}\\
+This can also be looked at in terms of the queue lengths. \\
+Total time spent in queue by all the customers = $\int_{0}^{T} [A(t) - D(t)] dt$ \cite{basics}\\
+Now, \\
+\[\int_{0}^{N} [D^{-1}(n) - A^{-1}(n)] dn = \int_{0}^{T} [A(t) - D(t)] dt \ \ \ \ \cite{basics}\]
+\[=>\frac{N}{T}.\frac{1}{N}\int_{0}^{N} [D^{-1}(n) - A^{-1}(n)] dn = \frac{1}{T}\int_{0}^{T} [A(t) - D(t)] dt \ \ \ \ \cite{basics}\]
+\[=>\lambda.W = L\ \ \ \ \cite{basics}\]
+where L is the average queue length,  $\lambda(=\frac{N}{T})$ is the average arrival rate over
+the time period under observation and W is the average delay per customer. 
+\begin{remark}
+We have assumed that the system starts and ends in an empty state.
+\end{remark}
+To know the length of the queue as a function time, we need to know the function $D(t)$
+ \begin{remark}
+ We know that the departures cannot be accumulated at a rate greater than $\mu$, so $$\frac{dD(t)}{dt} \leq \mu$$
+ \end{remark} 
+ \begin{remark}
+ When the queue is non-empty, we have $A(t)>D(t)$ and the server serves at maximum capacity , so $$\frac{dD(t)}{dt} = \mu$$ 
+ \end{remark}
+ \begin{remark}
+ When the queue is empty, we have $A(t)=D(t)$ and the rate of departure would not be greater the arrival rate $\lambda(t)$ , so $$\frac{dD(t)}{dt} = min(\lambda(t),\mu)$$
+ \end{remark}
+ Accumulating all the above remarks , we have
+ $$
+ \frac{dD(t)}{dt} =
+   \begin{cases} 
+      \mu & A(t)>D(t) \\
+      min(\lambda(t),\mu) & A(t)=D(t)
+   \end{cases}
+\ \ \ \ \ \ \ \cite{basics}$$
+Using the above function , we can integrate the differential and find $D(t)$ using graph method and then find the length of queue as a function of time. For further results and explanation refer \textit{Fundamentals of Queueing Systems}\cite{basics}
+\section{The Square Root Staffing Law}
+In queuing theory, the square root staffing law is a rule-of-thumb used to compute the capacity that would be required to meet an increased amount of traffic in the queue. The law is widely used to help in capacity planning in the QED (Quality-and-Efficiency-Driven) regime. More formally, the question we are dealing with is that if the current quality of service is deemed to be acceptable and necessary then how much must the capacity be increased to serve the increased demand. Rule of thumb answers this question. It says that to hold quality of service constant, you must have a variability hedge equal to the square root of the load increase. This law dates back to Erlang's work in 1917 \cite{erlang}.
+
+\section{The Newsvendor Problem}
+The newsvendor problem is a familiar problem in operational research that has application in determining the optimal level of inventory one should stock. Fixed prices and uncertain demand are typical characteristics of the newsvendor problem. This problem gets its name because it mirrors the situation a newspaper vendor faces while deciding the number of copies of the daily paper to buy. Since the demand is uncertain, unsold copies will be wasted. Order is placed before demand materializes and there is a cost incurred for ordering too much as well as for ordering too few items. These costs are analogous to the cost for idle servers and cost for poor customer service in the staffing problem. 
+\subsection{Problem Formulation} Number of units bought is denoted by $Q$. The per unit selling price is denoted by $P$, the per unit buying price is denoted by $C$ and the per-unit amount the newsvendor can get for an unsold unit, also known as the salvage price, is denoted by $S$. $F$ is the cumulative distribution function of demand. The per-unit cost for any items that cannot be sold is called the overage cost ($C_o$) and the per-unit cost for not meeting demand is called the  underage cost ($C_u$). \\
+\subsection{Solution of the Newsvendor Problem}
+The optimal $Q$ is given by:
+\[F(Q^*)=\frac{C_u}{C_u+C_o}\]
+This is called the Critical Fractile Formula. Now,
+\[C_o = C-S \ \ and \ \ C_u = P-C \]
+So,
+\[Q^*=F^{-1}(\frac{C_u}{C_u+C_o}) 
+=F^{-1}(\frac{P-C}{P-C+C-S})
+=F^{-1}(\frac{P-C}{P-S})\]
+The solution we see here was originally proposed in the works of Harrison and Zeevi (2005) \cite{newsvendor} and Whitt (2006) \cite{whitt}.
+

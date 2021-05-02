@@ -1,0 +1,102 @@
+\chapter{Capacity Sizing with a Blended Workforce}
+A blended workforce would be a mix of fixed as well as flexible servers. We assume that the number of fixed servers remains constant across the time horizon. The number of flexible servers varies for different periods. We let $m_{\lambda}$ denote the number of fixed servers and $\bold{n}_{\lambda} = (n_{\lambda}^1,..,n_{\lambda}^k)$ denote the number of flexible servers. The total number of servers in period i is, thus, 
+\[N(m_{\lambda},n_{\lambda}^i) = m_{\lambda} +N_{flex}(n_{\lambda}^i) = m_{\lambda} + n_{\lambda}^i + \sigma_{n_{\lambda}^i}\epsilon_i\]
+The manager must decide on the number of fixed and flexible servers during the initial planning stage. Remember that the per unit time staffing cost of a fixed server is $c_{fix}$, and the per unit time staffing cost of a flexible server is $c_{flex}$.
+\begin{remark}
+Analogous to our assumption about flexible workers, we have one for fixed workers to avoid no staffing from the resource. That is, \[c_{fix} < (\frac{h}{\theta} + r)\mu\]
+\end{remark}
+
+\section{The Staffing Problem for Blended Workforce}
+We are now prepared to formulate the staffing problem for a blended workforce, which is similar to the one for only flexible employees:
+
+\begin{equation}
+\begin{aligned}
+\min_{m_{\lambda},\bold{n}_{\lambda}} \Pi_{\lambda}(m_{\lambda},\bold{n}_{\lambda}) \equiv \sum_{i=1}^{k} T_i(c_{fix}m_{\lambda} + c_{flex}n_{\lambda}^i + h\mathbb{E}[Q^i(m_{\lambda},n_{\lambda}^i)] + r\xi(m_{\lambda},n_{\lambda}^i)) \\
+= \sum_{i=1}^{k} T_i(c_{fix}m_{\lambda} + c_{flex}n_{\lambda}^i + (h+r\theta)\mathbb{E}[Q^i(m_{\lambda},n_{\lambda}^i)])
+\end{aligned}
+\end{equation}
+
+Due to the fixed servers, we can no longer decompose the problem into k single-period problems.\\ As we did earlier, we consider the 
+fluid approximation and the stochastic-fluid approximation to make the problem simpler. \\
+
+\section{The Fluid Approximation} 
+\subsection{Problem Formulation} 
+\[\min_{m_{\lambda},\bold{n}_{\lambda}} \bar{\Pi}_{\lambda}(m_{\lambda},\bold{n}_{\lambda}) \equiv \sum_{i=1}^{k} T_i(c_{fix}m_{\lambda} + c_{flex}n_{\lambda}^i + \beta(\lambda_i/\mu - m_{\lambda} - n_{\lambda}^i)^+)\]
+\subsection{Asymptotic Accuracy} 
+Let $n_{\lambda}^{(m)} \equiv \min \bold{n}_{\lambda}$ and $n_{\lambda}^{(M)} \equiv \max \bold{n}_{\lambda}$. Let $m_{\lambda}^*$ and $n_{\lambda}^*$ denote the optimal solution of (5.1) and let $\bar{m}_{\lambda}$ and $\bar{n}_{\lambda}$ be the optimal solution of the above equation. 
+
+\begin{theorem}
+For large $\lambda$, 
+\[ \Pi_{\lambda}(\bar{m}_{\lambda},\bar{n}_{\lambda}) = \Pi_{\lambda}(m_{\lambda}^*,n_{\lambda}^*) + \mathcal{O}(max\{\sigma_{\bar{n}_{\lambda}^{(M)}}, \sqrt{\lambda}\}) \hspace{6.5cm}  \cite{dong}\]
+That is, if,  $\bar{n}_{\lambda}^{(M)}=\Theta(\lambda)$, then, $\Pi_{\lambda}(\bar{m}_{\lambda},\bar{n}_{\lambda}) = \Pi_{\lambda}(m_{\lambda}^*,n_{\lambda}^*) + \mathcal{O}(max\{\sigma_{\lambda}, \sqrt{\lambda}\})$ 
+\end{theorem}
+\subsection{Optimal Staffing Policy} 
+The optimal staffing strategy captures the trade-off between the costs of staffing and the flexibility of scaling the number of flexible servers to accommodate seasonality in demand since the fluid approximation ignores parameter uncertainty. We note, on the other hand, that if we plan to staff enough fixed servers to satisfy demand in a given period, h, we must also staff these servers for all other periods. Now, let $c_{fix}^h$ denote the time "modified" cost and be defined as below \\
+\begin{center}
+$c_{fix}^h = c_{fix}.\frac{\sum_{i=1}^k T_i}{\sum_{i=h}^k T_i}$ for h $\geq$ 1 \\    
+\end{center}
+\begin{lemma}
+The solution to the fluid approximation problem has been given in \cite{dong} as, 
+$$
+\begin{cases}
+      \bar{m}_{\lambda} = 0, & \text{for}\ k_0=0, \\
+      \bar{m}_{\lambda} = \frac{\lambda_{k_0}}{\mu}, & \text{for}\ k_0>0, \\
+      \bar{n}_{\lambda}^i = 0, & \text{for}\ 1 \leq i \leq k_0, \\
+      \bar{n}_{\lambda}^i = \frac{\lambda_i - \lambda_{k_0}}{\mu}, & \text{for}\ k_0 < i \leq k 
+    \end{cases}
+$$
+where $k_0$ is given by:
+$$
+k_0 = 
+\begin{cases}
+      0, & \text{if}\ c_{flex} < c_{fix}, \\
+      max\{1 \leq h \leq k: c_{flex} \geq c_{fix}^h\}, & \text{otherwise}
+    \end{cases}
+$$
+
+\end{lemma}
+\section{The Stochastic-Fluid Approximation} 
+\subsection{Problem Formulation} 
+\[\min_{m_{\lambda},\bold{n}_{\lambda}} \tilde{\Pi}_{\lambda}(m_{\lambda},\bold{n}_{\lambda}) \equiv \sum_{i=1}^{k} T_i(c_{fix}m_{\lambda} + c_{flex}n_{\lambda}^i + \beta\mathbb{E}[(\lambda_i/\mu - N(m_{\lambda},n_{\lambda}^i))^+])\]
+\subsection{Asymptotic Accuracy}
+Let $\tilde{m}_{\lambda}$ and $\tilde{n}_{\lambda}$ be the optimal solution of the above equation. 
+
+\begin{theorem}
+For large $\lambda$, 
+\[ \Pi_{\lambda}(\tilde{m}_{\lambda},\tilde{n}_{\lambda}) = \Pi_{\lambda}(m_{\lambda}^*,n_{\lambda}^*) + \mathcal{O}(\sqrt{\lambda}) \hspace{9cm}  \cite{dong}\] 
+That is, if,  $\tilde{n}_{\lambda}^{(m)}=\Theta(\lambda)$, then, $\Pi_{\lambda}(\tilde{m}_{\lambda},\tilde{n}_{\lambda}) = \Pi_{\lambda}(m_{\lambda}^*,n_{\lambda}^*) + \mathcal{O}(min\{\lambda/\sigma_{\lambda}, \sqrt{\lambda}\})$ 
+\end{theorem} 
+\subsection{Optimal Staffing Policy} 
+The optimal solution to the fluid staffing problem may not be reliable when uncertainty in the number of available servers is large. As a consequence, a stochastic-fluid refinement must be considered. The stochastic-fluid approximation, unlike the fluid approximation, takes parameter uncertainty into account. As a result, we can capture the trade-offs between three variables when solving the stochastic-fluid optimal staffing policy: the cost of staffing, the flexibility in scaling the workforce to meet seasonality in demand, and supply-side uncertainty. \\ We define:
+\[g(c) \equiv c + caF_{\epsilon}^{-1}(c/\beta)-\beta a\int_{-1}^{F_{\epsilon}^{-1}(c/\beta)}F_{\epsilon}(u) du\]
+\begin{theorem}
+As specified in \cite{dong}, in the solution of the stochastic-fluid problem, there are 2 cases:
+\begin{itemize}
+    \item \textbf{Case 1. Variability-dominated, moderately and strongly uncertainty-dominated
+regimes.}  If $\sigma_n = an^q$ for $0 < q < 1$ and $a > 0$. Also, $\bar{m}_{\lambda}$ and $k_0$ are as given in Lemma 5.2.2, then, the solution is:
+\begin{itemize}
+    \item $\tilde{m}_{\lambda}=\bar{m}_{\lambda}$
+    \item $\tilde{n}_{\lambda}^i=0$ if $i \leq k_0$
+    \item If $i>k_0, \ \tilde{n}_{\lambda}^i$ is the minimizer of the following problem:
+    \[\min_{n_{\lambda}\geq0} c_{flex}n_{\lambda} + \beta\mathbb{E}[(\lambda_i/\mu - \bar{m}_{\lambda} - n_{\lambda} -\sigma_{n_{\lambda}}\epsilon)^+],\]
+    as given by  $Theorem(4.5.2)$
+\end{itemize}
+    \item \textbf{Case 2. Extremely uncertainty-dominated
+regimes.}  If $\sigma_n = an$ for $0 < a < 1$. Also, $g(.)$ and $c_{fix}^h$ are as defined earlier. A new variable is now defined as below:
+$$
+k_1 = 
+\begin{cases}
+      0, & \text{if}\ c_{flex} < g(c_{fix}), \\
+      max\{1 \leq h \leq k: c_{flex} \geq g(c_{fix}^h)\}, & \text{otherwise}
+    \end{cases}
+$$
+The solution is then given by:
+\begin{itemize}
+    \item $\tilde{m}_{\lambda}=\lambda_{k_1}/\mu$
+    \item $\tilde{n}_{\lambda}^i=0$ if $i \leq k_1$
+    \item If $i>k_1, \ \tilde{n}_{\lambda}^i$ is the minimizer of the following problem:
+    \[\min_{n_{\lambda}\geq0} c_{flex}n_{\lambda} + \beta\mathbb{E}[(\lambda_i/\mu - \bar{m}_{\lambda} - n_{\lambda} -an_{\lambda}\epsilon)^+],\]
+    as given by $Theorem(4.5.2)$ 
+\end{itemize}
+\end{itemize}
+\end{theorem}

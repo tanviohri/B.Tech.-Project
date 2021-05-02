@@ -1,0 +1,125 @@
+\chapter{Optimizing the system management cost in the presence of self scheduling servers}
+(This chapter has been inspired from \textbf{\textit{Ibrahim(2018)} \cite{ibrahim}} , for all further explanations and results refer \cite{ibrahim})
+\\
+\\ We have seen how the parameter side uncertainty can affect a system in the previous chapter, in this chapter, we will take a look at the system where the number of servers is random, because the servers can self-schedule for different shifts.
+\\In a real life scenario, for many working systems, uncertainty in the availability of servers is inevitable .For models like Call Centres, Uber, Lyft, where the employee can self-schedule their working hours, it is important for the system manager to maintain a optimal number of employees to keep up with the demand and keep the customers happy while also minimising the cost of maintaining the system.
+\\ So let us consider a multi period queuing model where the servers can self schedule whether to serve in a particular shift and the customers are impatient as in any real life system. 
+\section{Modelling framework :}
+Let us consider a system with $k$ shifts and the queuing models for a individual shift to be 
+$G/G/N_{j}^{n} +GI$ in steady state. Here , $N_{j}^{n}$ is a random variable that indicates the number of servers in $j^{th}$ shift which depends on the total number of servers $n$. We also assume that all the servers are identical and service are identically distributed independent random variables and they follow a general distribution with mean $\frac{1}{\mu}$ , and W.L.O.G , $\mu=1$ . Also there is no restriction on any server in successive shifts or multiple shifts.
+\\ When the customer is waiting in the queue, after a random time, the customer leaves without being served, we call this time as patience time. Let us assume that the patience times are identically distributed independent random variables with a cdf $F$, complementary cdf ccdf $\bar{F}$, density function $f$, hazard-rate function $h_{a}$ and mean $\frac{1}{\theta}$. We assume the arrival, service, abandonment processes are mutually independent and also independent of the number of servers in a shift $N_{j}^{n}$. Also the queue is $FIFO$ and the capacity is unlimited. The customer arrival rate is stationary process of $\lambda_j$ for the $j^{th}$ shift.
+\section{System Manager's Problem}
+Being consistent with \textit{Bassamboo and Randhawa}\cite{bassamboo} , let's consider two costs in the system 
+ \begin{itemize}
+    \item a delay cost ${h_{j}}$ incurred per unit time a customer waits in the queue for being served in the $j^{th}$ shift
+    \item a penalty ${p_{j}}$ incurred per every customer who abandons the system in the $j^{th}$ shift
+\end{itemize}
+Let $Q_{N_{j}^{n}}$ be the queue length and $\alpha_{N_{j}^{n}}$ be the net abandonment. The system manager can decide on the staffing level $n$ , the problem becomes
+\begin{equation}
+   \min_{n \in \mathbb{N}} \Pi(n) = \sum_{1 \leq j \leq k} ({c_{j}\mathbb{E}[N_{j}^{n}]+p_{j}\mathbb{E}[\alpha_{N_{j}^{n}}]}+h_{j}\mathbb{E}[Q_{N_{j}^{n}}])   
+\end{equation}
+where $c_j$ is the compensation for each server in $j^{th}$ shift.
+\\ Since an exact analysis of (3.1) is difficult, let us consider a fluid approximation of the above problem, we will later show that the fluid approximation works good in case of a binomial distribution for the number of servers. 
+\\ "For an $G/G/s +GI$ system, $\bar{q}_{\rho_{s}}$ and $\bar{\alpha}_{\rho_{s}}$ are the fluid approximations of queue length and net abandonment rates respectively, with traffic intensity $\rho_{s} \equiv \frac{\lambda}{\mu s}$. This result is obtained from \textit{Whitt(2006)} \cite{fluid_self}"
+\\ So the fluid approximation for (3.1) is
+\begin{equation}
+    \min_{n \in \mathbb{N}} \Pi(n) = \sum_{1 \leq j \leq k} {n G(c_j)c_j+p_j.\bar{\alpha}_{{\rho_{s}}/{G(c_j)}}+h_j.\bar{q}_{{\rho_{s}}/{G(c_j)}}} \cite{ibrahim}
+\end{equation}
+Here, $\mathbb{E}[N_{j}^{n}] = G(c_j)$ , since $G(c_j)$ is a constant , let it be $r_j$ , which we define as availability of a server in $j^{th}$ shift. In the fluid approximation, we can see that the optimal staffing level is only dependent on the expectation of the number of servers in a particular shift , but in reality , the variance is a important factor as well which we will discuss in the later chapters.
+
+\section{Benchmark Case : No Self Scheduling}
+Before we proceed to the problem, let us take a benchmark case where there is no self scheduling which means $r_j$=1 , for all the shifts. Clearly , in a system where self scheduling is absent the manager can choose to staff each shift optimally individually , where as in a system where the servers can self schedule they have to choose the pool of servers before hand and allow them to reschedule.
+\\ The queue length in $j^{th}$ shift can be written as 
+\begin{equation}
+    q_j = \int_{0}^{w_j} D_j(u) \, du
+\end{equation}
+where $D_j(u)$ is the density of fluid that has been waiting for $u$ units of time in $j^{th}$ shift and it can be written as
+\begin{equation}
+    D_j(u) = \lambda_j \bar{F}(u)
+\end{equation}
+ Combining (3.3) and (3.4) , we have 
+ \begin{equation}
+     q_j = \int_{0}^{w_j} \lambda_j \bar{F}(u)  \, du
+ \end{equation}
+  The net abandonment rate in $j^{th}$  shift can be written as
+  \begin{equation}
+      \alpha_j=\lambda_j F(w_j)
+  \end{equation}
+   where $w_j$ denotes the waiting time in given shift $j$.
+ Clearly, when there is no self-scheduling the individual optimal staffing in each shift 
+ \begin{equation}
+     n_j^{*}=\lambda \bar{F}(w_j^{*})
+ \end{equation}
+  where $w_j^{*}$ would be the optimal waiting time. Also clearly the individual staffing level for each shift is less than the $\lambda_j$ for that shift since $\bar{F}(w_j) \leq 1$, so staffing more than $\lambda_j$ in any shift would not be optimal.
+\\With the results in (3.5) and (3.6) the system managers problem becomes
+\begin{equation}
+    min_{w_j \geq 0} \left( \lambda_j c_j \bar{F}(w_j) - \lambda_j p_j \bar{F}(w_j) + \lambda_j h_j\int_{0}^{w_j} \lambda_j \bar{F}(u)  \, du \right)
+\end{equation}
+Lets look at some assumptions and propositions
+\\ \textbf{ Assumption 3.1.} $For$ $all$ $j$ , $c_j$ $<$ min($h_j/h_a(0)+p_j,h_j/\theta+p_j$)
+\\ The above assumption tells us that this source of servers are economical enough for the manager to staff from them and not avoid them altogether, this is consistent with the assumption in \cite{bassamboo} , also if the abandonment process is exponential , we have $h_a(t) = \theta t$ , so $h_a(0) =0$ , the first term becomes $\inf$ , so the assumption becomes
+\begin{equation}
+    c_j < h_j/\theta +p_j
+\end{equation}
+Using this , we will try and show the next proposition (4.1.)
+\\\textbf{Proposition 4.1.} \textit {Under the above assumption , to optimise the costs in a system with no self scheduling , we should load all the shifts critically} , $i.e.$ $n_j^{*}=\lambda_j$ for all $j$
+\\Since we know that the staffing costs are reasonably inexpensive , it is in the interest of the system manager to match the demand as there will be no reneging in the system and it is optimal, where if there was no upper bound on the staffing cost , it would have been advisable to leave some customers unattended to optimize the overall problem.
+ \section{The actual problem : Servers with Self- Scheduling capability}
+ In this case , the $r_j$ factor is no longer $1$, so we define a new arrival rate called the \textit{augmented arrival rate} $\Gamma_j$.
+ \begin{definition} \label{}
+ The augmented arrival rate is defined as the ratio of actual arrival rate and the showup probability $i.e$ $\Gamma_j = \lambda_j/r_j$
+ \end{definition}
+ Also W.L.O.G , we will assume that the shifts are ordered in the increasing order of $\Gamma_j$
+ $i.e$ $\Gamma_{j-1} \leq \Gamma_{j}$ for $j$={$1,2,...,k$} , with this ordering , we can have the following: 
+ \begin{remark}
+ If we take a staffing level $n$ , such that $\Gamma_{j-1} < n < \Gamma_{j}$ , then we can see that the shifts with $i \geq j$ are overloaded and the shifts with $i < j$ are under loaded.
+ \end{remark}
+ \begin{remark}
+ If we take a staffing level $n$ , such that $n =\Gamma_{j}$ , then we can see that the shifts with $i > j$ are overloaded and the shifts with $i < j$ are under loaded , while the shift $j$ is critically loaded.
+ \end{remark}
+ \begin{remark}
+ In an overloaded shift, we have $\Gamma_i \bar{F}(w_i) =n$ , $i.e$ , $w_i = \bar{F}^{-1}(n/\Gamma_i)$.
+ \end{remark}
+As we observed in the benchmark case ,underloading all the shifts can result in a congested system ,  while on the other hand overloading might increase the cost of maintaining the system, so the system manager's problem in terms of the augmented arrival rate $\Gamma_j$ becomes 
+\begin{equation}
+      min_{0 \leq n \leq \Gamma_k} C(n) = \left( \sum_{j=1}^{k} {I(\Gamma_{j-1}\leq n <\Gamma_j)u_j(n)}\right)
+\end{equation}
+where $I(n \in S)$ is a indicator random variable that tells us whether the value $n$ is in the set $S$ and $u_j(n)$ is given by 
+\begin{equation}
+u_j(n)=\sum_{i=1}^{k}{c_inr_i}+\sum_{i=j}^{k}{\left ( p_i( \lambda_i-nr_i)+ h_i\lambda_i \int_{0}^{\bar{F}^{-1}(n/\Gamma_i)}  \bar{F}(u)  \, du \right)}
+\end{equation}
+this $u_j$ represents the cost of the system if $n$ is chosen in the [$\Gamma_{j-1}$,$\Gamma_j$), also we can see that only one of the indicator variables is non-zero and the rest of them are zero.So if we choose it in the [$\Gamma_{j_{0}-1}$,$\Gamma_{j_0}$) we have the cost of system is $u_{j_0}$ and all the shifts below $j_0$ the system is under staffed and the manager faces customer related losses, where as for the shifts $j_0$ and above it is over staffed and the staffing costs are high.
+\\ We will now derive a proposition which compares this system to the benchmark and tells us in which condition, maintaining a self scheduling system is not more expensive for the manager when compared to a system with no self scheduling 
+\\ \textbf{Proposition 3.2.} \textit{If the calculated $\Gamma_j$ ("resulting augmented arrival rates") are equal across all shifts then and only then, the self scheduling system is not more expensive than a system with no self scheduling}
+\begin{proof} \label{}
+Let all the augmented arrival rates be equal $i.e$ $\Gamma_j=\Gamma$, then assuming that $n^{*}=\Gamma$ gives, $n_i^{*}=n^{*}r_i=\lambda_i$ for all shifts, as we have seen in proposition (4.1), this is the optimal staffing cost in the case of the benchmark, so if all the augmented arrival rates are equal , we can eliminate the cost of self scheduling. 
+\end{proof}
+The above proposition shows us the importance of having multiple shifts in the system. Because in the case of a single shift, the manager could just meet the demand in that shift by having a big enough staffing level like $\lambda/r$ and have no cost of self scheduling, it is to accommodate multiple shifts, manager has to take in to consideration the cost of self scheduling. 
+\\In light of this proposition , let us consider a system with 2 shifts: shifts $A$ and $B$, let us assume that the arrival rates in both the system is known to the manager and they are $\lambda_A$ and $\lambda_B$ and without loss of generality let us assume that $\lambda_A<\lambda_B$ , then while selecting the staffing pool for this shifts, the manager could select a pool such that the probability of showing up is higher in shift $A$ than $B$ $i.e$ $r_A < r_B$ and the ratios are equal and by doing the cost of self scheduling can be avoided. But as we know in a real life scenario it may not be possible for the system manager to know these values beforehand. They can use the estimated historic values to make a decision.
+\\
+\\
+\\ Now let us dive into a case where the augmented arrival rates are not equal and the hazard rate for the abandonment process is increasing, specifically exponential.
+\section{Exponential Abandonment and Non-equal Augmented Arrival Rates}
+In this case, we actually see that it is efficient for the system to match the demand in one of the shifts with all of the shifts instead of matching it in every shift and leaving the remaining shifts underloaded or overloaded. \\
+\\ \textbf{Proposition 3.3.} \textit{For exponential abandonment rates :
+\begin{enumerate}
+    \item The optimization function in (3.10) is piece-wise linear.
+    \item There exists one shift $s$, such that by matching the demand in that shift we can optimize the system $i.e.$ $n^{*}=\Gamma_{s}$.
+    \item $i_0$ satisfies the following condition:
+    \begin{equation}
+        \sum_{j=1}^{k}c_jr_j-\sum_{j=i_0}^{k}\left(p_j+h_j/\theta \right)r_j < 0\,\,and
+        \sum_{j=1}^{k}c_jr_j-\sum_{j=i_0+1}^{k}\left(p_j+h_j/\theta \right)r_j > 0
+    \end{equation}
+\end{enumerate}}
+\begin{proof}
+If the cumulative distribution function $F(x)=1-e^{-\frac{x}{\theta}}$ i.e the abandonment process is exponential, then for $\Gamma_{i-1} \leq n \leq \Gamma_i$
+\begin{equation}
+    u_i(n) =\sum_{j=1}^{k} c_jr_jn +\sum_{j=i}^{k}(p_j + h_j/\theta)(\lambda_j - n r_j )
+\end{equation} Clearly, under condition (3.12), C(n) is piece wise linear with
+$$ \frac{dC(n)}{dn}=\begin{cases} 
+      negative & n \leq \Gamma_{i_0} \\
+      positive & n >\Gamma_{i_0}
+\end{cases}$$
+Hence,the minimum must occur at some $\Gamma_{s}$.
+\end{proof}
+
